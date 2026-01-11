@@ -1,0 +1,9 @@
+FROM astral/uv:python3.12-bookworm-slim
+
+WORKDIR /app
+
+COPY pyproject.toml ./
+COPY . .
+RUN rm -rf .venv || true
+
+CMD ["uv", "run", "python", "-u", "main.py"]
