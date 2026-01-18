@@ -7,6 +7,7 @@ import (
 
 	"finance-helper/api/internal/db"
 	"finance-helper/api/internal/handlers"
+	"finance-helper/api/internal/migrations"
 )
 
 func main() {
@@ -16,6 +17,10 @@ func main() {
 	}
 
 	defer db.Close()
+
+	if err := migrations.Run(db.GetDB(), "./migrations/sql"); err != nil {
+		log.Fatal("Migration failed:", err)
+	}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", handlers.Root)
